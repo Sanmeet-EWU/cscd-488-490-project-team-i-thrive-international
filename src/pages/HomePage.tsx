@@ -2,17 +2,17 @@ import React from 'react';
 
 const HomePage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50">
-      <div className="max-w-7xl mx-auto py-16 px-4">
-        <div className="flex items-center gap-4 mb-12">
-          <div className="h-8 w-8 bg-indigo-600 rounded-full"></div>
-          <h1 className="text-5xl font-bold text-indigo-900">
-            Thrive International
-          </h1>
-        </div>
-        <p className="text-2xl text-indigo-700 font-light">
-          Supporting refugees in their journey to thrive and build new beginnings.
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-100 to-blue-50 flex items-center justify-center">
+      <div className="text-center max-w-4xl mx-auto">
+        <h1 className="text-6xl font-extrabold text-indigo-900 mb-6">
+          THRIVE INTERNATIONAL
+        </h1>
+        <p className="text-2xl text-neutral-700 leading-relaxed">
+          Supporting Refugees In Their Journey To Thrive And Build New Beginnings.
         </p>
+        <button className="mt-8 px-6 py-3 bg-accent text-white rounded-lg shadow-lg hover:bg-amber-600 transition">
+          Get Started
+        </button>
       </div>
     </div>
   );

@@ -1,108 +1,110 @@
 import React, { useState } from 'react';
 
-const IntakeForm: React.FC = () => {
-  const [formData, setFormData] = useState<{
-    fullName: string;
-    dateOfBirth: string;
-    gender: string;
-    email: string;
-    phone: string;
-    countryOfOrigin: string;
-    dateOfArrival: string;
-    immigrationStatus: string;
-    supportNeeds: {
-      employment: boolean;
-      housing: boolean;
-      education: boolean;
-      languageClasses: boolean;
-      other: string;
-    };
-    emergencyContact: {
-      name: string;
-      relationship: string;
-      phone: string;
-      email: string;
-    };
-    additionalNotes: string;
-  }>({
-    fullName: '',
-    dateOfBirth: '',
-    gender: '',
-    email: '',
-    phone: '',
-    countryOfOrigin: '',
-    dateOfArrival: '',
-    immigrationStatus: '',
-    supportNeeds: {
-      employment: false,
-      housing: false,
-      education: false,
-      languageClasses: false,
-      other: '',
-    },
-    emergencyContact: {
-      name: '',
-      relationship: '',
-      phone: '',
-      email: '',
-    },
-    additionalNotes: '',
+const IntakeForm = () => {
+  const [formData, setFormData] = useState({
+    organizationName: '',
+    navigatorName: '',
+    intakeDate: '',
+    firstName: '',
+    lastName: ''
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      supportNeeds: {
-        ...prev.supportNeeds,
-        [name]: checked,
-      },
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Add submission logic here (e.g., API call)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto bg-white p-8 shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold text-indigo-900 mb-4">Intake Form</h2>
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Community Outreach and Education Intake Form</h1>
+      
+      <form className="space-y-6">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Organization Name
+              <input
+                type="text"
+                name="organizationName"
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm p-2"
+                onChange={handleChange}
+              />
+            </label>
+          </div>
 
-      {/* Support Needs */}
-      <fieldset>
-        <legend className="block text-sm font-medium text-gray-700">Support Needs</legend>
-        <div className="mt-4 space-y-2">
-          {(['employment', 'housing', 'education', 'languageClasses'] as const).map((need) => (
-            <div key={need}>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  name={need}
-                  checked={!!formData.supportNeeds[need as keyof typeof formData.supportNeeds]} // Ensure boolean value
-                  onChange={handleCheckboxChange}
-                  className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                />
-                <span className="ml-2 capitalize">{need.replace(/([A-Z])/g, ' $1')}</span>
-              </label>
-            </div>
-          ))}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Navigator Name
+              <input
+                type="text"
+                name="navigatorName"
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm p-2"
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Intake Date
+              <input
+                type="date"
+                name="intakeDate"
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm p-2"
+                onChange={handleChange}
+              />
+            </label>
+          </div>
         </div>
-      </fieldset>
 
-      <button
-        type="submit"
-        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow hover:bg-indigo-700"
-      >
-        Submit
-      </button>
-    </form>
+        <div className="space-y-4 pt-4 border-t">
+          <h2 className="text-xl font-semibold">Participant Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="block text-sm font-medium mb-1">
+              First Name
+              <input
+                type="text"
+                name="firstName"
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm p-2"
+                onChange={handleChange}
+              />
+            </label>
+            
+            <label className="block text-sm font-medium mb-1">
+              Last Name
+              <input
+                type="text"
+                name="lastName"
+                className="mt-1 block w-full rounded border-gray-300 shadow-sm p-2"
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+        </div>
+
+        <div className="space-y-4 pt-4 border-t">
+          <h2 className="text-xl font-semibold">Eligibility Verification</h2>
+          <div className="space-y-2">
+            <label className="flex items-center space-x-2">
+              <input type="checkbox" className="rounded border-gray-300" />
+              <span>Receiving resettlement agency services</span>
+            </label>
+            
+            <label className="flex items-center space-x-2">
+              <input type="checkbox" className="rounded border-gray-300" />
+              <span>16 years or older</span>
+            </label>
+
+            <label className="flex items-center space-x-2">
+              <input type="checkbox" className="rounded border-gray-300" />
+              <span>Lives in Washington</span>
+            </label>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 };
 
