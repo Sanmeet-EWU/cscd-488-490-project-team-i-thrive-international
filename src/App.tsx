@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import AboutUs from './pages/AboutUs';
-import IntakeForm from './pages/IntakeForm';
+import IntakeForms from './pages/IntakeForms';
+import StudentRegistrationForm from './pages/forms/StudentRegistrationForm';
+import ThriveIntakeForm from './pages/forms/ThriveIntakeForm';
 
-export type PageType = 'home' | 'intake' | 'about';
+export type PageType = 'home' | 'intake' | 'about' | 'studentRegistration' | 'thriveIntake';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
@@ -14,9 +16,13 @@ const App: React.FC = () => {
       case 'home':
         return <HomePage />;
       case 'intake':
-        return <IntakeForm />;
+        return <IntakeForms setCurrentPage={setCurrentPage} />;
       case 'about':
         return <AboutUs />;
+      case 'studentRegistration':
+        return <StudentRegistrationForm />;
+      case 'thriveIntake':
+        return <ThriveIntakeForm />;
       default:
         return <HomePage />;
     }
@@ -24,7 +30,7 @@ const App: React.FC = () => {
 
   return (
     <div className="font-sans">
-      <Navigation setCurrentPage={(page: PageType) => setCurrentPage(page)} />
+      <Navigation setCurrentPage={setCurrentPage} />
       {renderPage()}
     </div>
   );

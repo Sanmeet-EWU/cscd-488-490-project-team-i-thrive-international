@@ -24,7 +24,7 @@ const Navigation: React.FC<NavigationProps> = ({ setCurrentPage }) => {
             onClick={() => setCurrentPage('intake')}
             className="hover:text-secondary transition-colors"
           >
-            Intake Form
+            Intake Forms
           </button>
           <button
             onClick={() => setCurrentPage('about')}
