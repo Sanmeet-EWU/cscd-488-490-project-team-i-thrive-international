@@ -13,6 +13,7 @@ const IntakeForms: React.FC<IntakeFormsProps> = ({ setCurrentPage }) => {
           Intake Forms
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Student Registration Form */}
           <div className="bg-white rounded-lg shadow-xl p-6 hover:shadow-2xl transition-shadow">
             <h2 className="text-xl font-bold text-indigo-900 mb-4">
               Student Registration Form
@@ -27,7 +28,8 @@ const IntakeForms: React.FC<IntakeFormsProps> = ({ setCurrentPage }) => {
               Access Form
             </button>
           </div>
-          
+
+          {/* Thrive Intake Form */}
           <div className="bg-white rounded-lg shadow-xl p-6 hover:shadow-2xl transition-shadow">
             <h2 className="text-xl font-bold text-indigo-900 mb-4">
               Thrive Intake Form
@@ -37,6 +39,22 @@ const IntakeForms: React.FC<IntakeFormsProps> = ({ setCurrentPage }) => {
             </p>
             <button 
               onClick={() => setCurrentPage('thriveIntake')}
+              className="w-full bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700 transition-colors"
+            >
+              Access Form
+            </button>
+          </div>
+
+          {/* Soccer Camp Registration */}
+          <div className="bg-white rounded-lg shadow-xl p-6 hover:shadow-2xl transition-shadow">
+            <h2 className="text-xl font-bold text-indigo-900 mb-4">
+              Soccer Camp Registration
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Register participants for the upcoming soccer camp.
+            </p>
+            <button 
+              onClick={() => setCurrentPage('soccerCamp')}
               className="w-full bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700 transition-colors"
             >
               Access Form

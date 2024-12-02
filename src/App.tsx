@@ -5,8 +5,9 @@ import AboutUs from './pages/AboutUs';
 import IntakeForms from './pages/IntakeForms';
 import StudentRegistrationForm from './pages/forms/StudentRegistrationForm';
 import ThriveIntakeForm from './pages/forms/ThriveIntakeForm';
+import SoccerCampRegistration from './pages/forms/SoccerRegistrationCamp';
 
-export type PageType = 'home' | 'intake' | 'about' | 'studentRegistration' | 'thriveIntake';
+export type PageType = 'home' | 'intake' | 'about' | 'studentRegistration' | 'thriveIntake' | 'soccerCamp';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
@@ -23,6 +24,8 @@ const App: React.FC = () => {
         return <StudentRegistrationForm />;
       case 'thriveIntake':
         return <ThriveIntakeForm />;
+      case 'soccerCamp':
+        return <SoccerCampRegistration />;
       default:
         return <HomePage />;
     }
