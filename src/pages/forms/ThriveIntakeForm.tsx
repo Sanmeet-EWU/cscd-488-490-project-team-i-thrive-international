@@ -1,7 +1,16 @@
 import React, { useState, ChangeEvent } from 'react';
 
-interface PersonalInfo {
-  name: string;
+interface ThriveIntakeFormData {
+  intakeDate: string;
+  navigatorName: string;
+  programType: {
+    ORIA: boolean;
+    EMM: boolean;
+    InternalReferral: boolean;
+    ORIAOptions: string[]; // Sub-options for ORIA
+    InternalReferralOptions: string[]; // Sub-options for Internal Referral
+  };
+  firstName: string;
   lastName: string;
   dateOfBirth: string;
   gender: string;
@@ -9,348 +18,534 @@ interface PersonalInfo {
   phoneNumber: string;
   emailAddress: string;
   address: string;
-}
-
-interface ORIA {
-  checked: boolean;
-  affordableHousing: boolean;
-  teenKidCloset: boolean;
-  medical: boolean;
-  other: boolean;
-}
-
-interface EMM {
-  checked: boolean;
-}
-
-interface InternalReferral {
-  checked: boolean;
-  economicEmpowerment: boolean;
-  womensEmpowerment: boolean;
-  youthEmpowerment: boolean;
-}
-
-interface ServicesNeeded {
-  housing: boolean;
-  employmentFinancials: boolean;
-  medical: boolean;
-  assistanceServices: boolean;
-  other: boolean;
-}
-
-interface ProgramEligibility {
-  receivingServices: boolean;
-  isOver16: boolean;
-  livesInWashington: boolean;
-  arrivedAfterJuly2021: boolean;
-  hasApprovedStatus: boolean;
-  completedConsentForm: boolean;
-  completedReleaseForm: boolean;
-  hasCopyOfStatus: boolean;
-}
-
-interface FormData {
-  intakeDate: string;
-  navigatorName: string;
-  oria: ORIA;
-  emm: EMM;
-  internalReferral: InternalReferral;
-  personalInfo: PersonalInfo;
-  immigrationStatus: string;
-  dateGranted: string;
+  immigrationStatus: string[];
+  asylumDateGranted: string; 
   alienNumber: string;
   eligibilityDate: string;
-  programEligibility: ProgramEligibility;
-  servicesNeeded: ServicesNeeded;
+  programEligibility: {
+    receivingServices: boolean | undefined;
+    ageOver16: boolean | undefined;
+    livesInWashington: boolean | undefined;
+    arrivedAfterJuly2021: boolean | undefined;
+    approvedImmigrationStatus: boolean | undefined;
+    consentFormCompleted: boolean | undefined;
+    releaseFormCompleted: boolean | undefined;
+    immigrationStatusCopy: boolean | undefined;
+  }
+  servicesNeeded: string[];
 }
 
-const ThriveIntakeForm = () => {
-  const [formData, setFormData] = useState<FormData>({
+const ThriveIntakeForm: React.FC = () => {
+  const [formData, setFormData] = useState<ThriveIntakeFormData>({
     intakeDate: '',
     navigatorName: '',
-    oria: {
-      checked: false,
-      affordableHousing: false,
-      teenKidCloset: false,
-      medical: false,
-      other: false
+    programType: {
+      ORIA: false,
+      EMM: false,
+      InternalReferral: false,
+      ORIAOptions: [],
+      InternalReferralOptions: [],
     },
-    emm: {
-      checked: false
-    },
-    internalReferral: {
-      checked: false,
-      economicEmpowerment: false,
-      womensEmpowerment: false,
-      youthEmpowerment: false
-    },
-    personalInfo: {
-      name: '',
-      lastName: '',
-      dateOfBirth: '',
-      gender: '',
-      countryOfOrigin: '',
-      phoneNumber: '',
-      emailAddress: '',
-      address: ''
-    },
-    immigrationStatus: '',
-    dateGranted: '',
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    gender: '',
+    countryOfOrigin: '',
+    phoneNumber: '',
+    emailAddress: '',
+    address: '',
+    immigrationStatus: [],
+    asylumDateGranted: '',
     alienNumber: '',
     eligibilityDate: '',
     programEligibility: {
-      receivingServices: false,
-      isOver16: false,
-      livesInWashington: false,
-      arrivedAfterJuly2021: false,
-      hasApprovedStatus: false,
-      completedConsentForm: false,
-      completedReleaseForm: false,
-      hasCopyOfStatus: false
+      receivingServices: undefined,
+      ageOver16: undefined,
+      livesInWashington: undefined,
+      arrivedAfterJuly2021: undefined,
+      approvedImmigrationStatus: undefined,
+      consentFormCompleted: undefined,
+      releaseFormCompleted: undefined,
+      immigrationStatusCopy: undefined,
     },
-    servicesNeeded: {
-      housing: false,
-      employmentFinancials: false,
-      medical: false,
-      assistanceServices: false,
-      other: false
-    }
+    servicesNeeded: [],
   });
 
-  const immigrationStatuses = [
-    'Refugee',
-    'Asylum (Approved and granted)',
-    'Cuban and Haitian entrants',
-    'Amerasians',
-    'Certified victims of human trafficking',
-    'Iraqi and Afghan Special Immigrants',
-    'Afghan Humanitarian Parolees',
-    'Afghans with Special Immigrant Parole (SI/SQ Parole) or Special Immigrant Conditional Permanent Residents (SI CPR)',
-    'Ukrainian Humanitarian Parolees'
-  ];
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    const checked = (e.target as HTMLInputElement).checked;
-    
-    if (name.includes('.')) {
-      const [section, field] = name.split('.');
-      setFormData(prev => ({
-        ...prev,
-        [section]: {
-          ...(prev[section as keyof FormData] as object),
-          [field]: type === 'checkbox' ? checked : value
-        }
-      }));
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type, checked } = e.target as HTMLInputElement;
+  
+    if (type === 'checkbox') {
+      if (name === 'immigrationStatus') {
+        setFormData((prev) => ({
+          ...prev,
+          immigrationStatus: checked
+            ? [...prev.immigrationStatus, value]
+            : prev.immigrationStatus.filter((item) => item !== value),
+        }));
+      } else if (name.startsWith('programType.')) {
+        const field = name.split('.')[1];
+        setFormData((prev) => ({
+          ...prev,
+          programType: {
+            ...prev.programType,
+            [field]: checked,
+          },
+        }));
+      } else if (name === 'servicesNeeded') {
+        setFormData((prev) => ({
+          ...prev,
+          servicesNeeded: checked
+            ? [...prev.servicesNeeded, value]
+            : prev.servicesNeeded.filter((item) => item !== value),
+        }));
+      } else if (name.endsWith('.yes')) {
+        const field = name.replace('.yes', '');
+        setFormData((prev) => ({
+          ...prev,
+          programEligibility: {
+            ...prev.programEligibility,
+            [field]: true,
+          },
+        }));
+      } else if (name.endsWith('.no')) {
+        const field = name.replace('.no', '');
+        setFormData((prev) => ({
+          ...prev,
+          programEligibility: {
+            ...prev.programEligibility,
+            [field]: false,
+          },
+        }));
+      }
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [name]: type === 'checkbox' ? checked : value
+        [name]: value,
       }));
     }
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Thrive Intake Form Data:', formData);
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-6">INTAKE/REGISTRATION FORM</h1>
-
-      <form className="space-y-8">
-        {/* Page 1 */}
-        <div className="space-y-6">
-          {/* Basic Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Intake Date</label>
-              <input
-                type="date"
-                name="intakeDate"
-                value={formData.intakeDate}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Navigator Name</label>
-              <input
-                type="text"
-                name="navigatorName"
-                value={formData.navigatorName}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-3xl font-bold text-center mb-6">
+        Thrive International Intake/Registration Form
+      </h1>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Intake Date and Navigator Name */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Intake Date
+            </label>
+            <input
+              type="date"
+              name="intakeDate"
+              value={formData.intakeDate}
+              onChange={handleChange}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Navigator Name
+            </label>
+            <input
+              type="text"
+              name="navigatorName"
+              value={formData.navigatorName}
+              onChange={handleChange}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+        </div>
 
-          {/* ORIA Section */}
-          <div className="border p-4 rounded">
-            <label className="flex items-center mb-2">
+        {/* Program Type */}
+        <div className="space-y-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Program Type
+          </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="flex items-center">
               <input
                 type="checkbox"
-                name="oria.checked"
-                checked={formData.oria.checked}
+                name="programType.ORIA"
+                checked={formData.programType.ORIA}
                 onChange={handleChange}
                 className="mr-2"
               />
-              <span className="font-medium">ORIA</span>
+              ORIA
             </label>
-            <div className="ml-6 space-y-2">
-              {(['affordableHousing', 'teenKidCloset', 'medical', 'other'] as const).map(item => (
-                <label key={item} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name={`oria.${item}`}
-                    checked={formData.oria[item]}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  {item.charAt(0).toUpperCase() + item.slice(1).replace(/([A-Z])/g, ' $1')}
-                </label>
-              ))}
-            </div>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="programType.EMM"
+                checked={formData.programType.EMM}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              EMM
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="programType.InternalReferral"
+                checked={formData.programType.InternalReferral}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Internal Referral
+            </label>
           </div>
 
-          {/* Participant Information */}
-          <div className="border p-4 rounded">
-            <h2 className="font-bold mb-4">PARTICIPANT INFORMATION</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {(Object.keys(formData.personalInfo) as Array<keyof PersonalInfo>).map(field => (
-                <div key={field}>
-                  <label className="block text-sm font-medium mb-1">
-                    {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}
+          {/* ORIA Sub-Options */}
+          {formData.programType.ORIA && (
+            <div className="ml-6 space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                ORIA Options
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {['Affordable Housing', 'Teen & Kid Closet', 'Medical', 'Other'].map((option) => (
+                  <label key={option} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name={`ORIAOptions.${option}`}
+                      checked={formData.programType.ORIAOptions.includes(option)}
+                      onChange={handleChange}
+                      className="mr-2"
+                    />
+                    {option}
                   </label>
-                  <input
-                    type={field.includes('date') ? 'date' : field.includes('email') ? 'email' : 'text'}
-                    name={`personalInfo.${field}`}
-                    value={formData.personalInfo[field]}
-                    onChange={handleChange}
-                    className="w-full p-2 border rounded"
-                  />
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Internal Referral Sub-Options */}
+          {formData.programType.InternalReferral && (
+            <div className="ml-6 space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Internal Referral Options
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {['Economic Empowerment', 'Women\'s Empowerment', 'Youth Empowerment'].map((option) => (
+                  <label key={option} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name={`InternalReferralOptions.${option}`}
+                      checked={formData.programType.InternalReferralOptions.includes(option)}
+                      onChange={handleChange}
+                      className="mr-2"
+                    />
+                    {option}
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Participant Information */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold">Participant Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                First Name
+              </label>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Last Name
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Gender
+              </label>
+              <input
+                type="text"
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Country of Origin
+              </label>
+              <input
+                type="text"
+                name="countryOfOrigin"
+                value={formData.countryOfOrigin}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="emailAddress"
+                value={formData.emailAddress}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Address
+              </label>
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
             </div>
           </div>
         </div>
 
-        {/* Page 2 */}
-        <div className="space-y-6">
-          {/* Immigration Status */}
-          <div className="border p-4 rounded">
-            <h2 className="font-bold mb-4">CURRENT IMMIGRATION STATUS</h2>
-            <div className="space-y-2">
-              {immigrationStatuses.map(status => (
-                <label key={status} className="flex items-center">
-                  <input
-                    type="radio"
-                    name="immigrationStatus"
-                    value={status}
-                    checked={formData.immigrationStatus === status}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  {status}
-                </label>
-              ))}
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Date Granted</label>
-                <input
-                  type="date"
-                  name="dateGranted"
-                  value={formData.dateGranted}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Alien #</label>
-                <input
-                  type="text"
-                  name="alienNumber"
-                  value={formData.alienNumber}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Eligibility Date</label>
-                <input
-                  type="date"
-                  name="eligibilityDate"
-                  value={formData.eligibilityDate}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-            </div>
+{/* Current Immigration Status */}
+<div className="space-y-4">
+  <h2 className="text-xl font-bold">Current Immigration Status</h2>
+  <div className="space-y-2">
+    {[
+      'Refugee',
+      'Asylum (Approved and granted)',
+      'Cuban and Haitian entrants',
+      'Amerasians',
+      'Certified victims of human trafficking',
+      'Iraqi and Afghan Special Immigrants',
+      'Afghan Humanitarian Parolees',
+      'Afghans with Special Immigrant Parole (SI/SQ Parole) or Special Immigrant Conditional Permanent Residents (SI CPR)',
+      'Ukrainian Humanitarian Parolees',
+    ].map((status) => (
+      <div key={status}>
+        <label className="flex items-center">
+          <input
+            type="checkbox"
+            name="immigrationStatus"
+            value={status}
+            checked={formData.immigrationStatus.includes(status)}
+            onChange={handleChange}
+            className="mr-2"
+          />
+          {status}
+        </label>
+        {/* Additional input for Asylum Date Granted */}
+        {status === 'Asylum (Approved and granted)' && formData.immigrationStatus.includes(status) && (
+          <div className="ml-6 mt-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Date granted
+            </label>
+            <input
+              type="date"
+              name="asylumDateGranted"
+              value={formData.asylumDateGranted || ''}
+              onChange={handleChange}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            />
           </div>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
 
-          {/* Program Eligibility */}
-          <div className="border p-4 rounded">
-            <h2 className="font-bold mb-4">PROGRAM ELIGIBILITY DETERMINATION (DSHS ONLY)</h2>
-            <div className="space-y-2">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="programEligibility.receivingServices"
-                  checked={formData.programEligibility.receivingServices}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                Is participant receiving services from resettlement agencies?
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="programEligibility.isOver16"
-                  checked={formData.programEligibility.isOver16}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                Is participant 16 years of age or older?
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="programEligibility.livesInWashington"
-                  checked={formData.programEligibility.livesInWashington}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                Does participant live in Washington?
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="programEligibility.arrivedAfterJuly2021"
-                  checked={formData.programEligibility.arrivedAfterJuly2021}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                Did participant arrive after July 1, 2021?
-              </label>
-            </div>
-          </div>
+{/* Program Eligibility Determination (DSHS ONLY) */}
+<div className="space-y-4">
+  <h2 className="text-xl font-bold">Program Eligibility Determination (DSHS ONLY)</h2>
+  <div className="space-y-4">
+    {[
+      {
+        question: 'Is the participant receiving services from resettlement agencies, such as Reception and Placement, Matching Grant, and/or Preferred Community Programs?',
+        field: 'receivingServices',
+      },
+      {
+        question: 'Is the participant 16 years of age or older?',
+        field: 'ageOver16',
+      },
+      {
+        question: 'Does the participant live in Washington?',
+        field: 'livesInWashington',
+      },
+      {
+        question: 'Did the participant arrive in the United States on or after July 1, 2021?',
+        field: 'arrivedAfterJuly2021',
+      },
+      {
+        question: 'Does the participant have an approved immigration status?',
+        field: 'approvedImmigrationStatus',
+      },
+      {
+        question: 'Completed Consent Form:',
+        field: 'consentFormCompleted',
+      },
+      {
+        question: 'Completed Release of information (Thrive and DSHS)',
+        field: 'releaseFormCompleted',
+      },
+      {
+        question: 'Is a copy of the immigration status collected and kept in the participant\'s file?',
+        field: 'immigrationStatusCopy',
+      },
+    ].map((item) => (
+      <div key={item.field} className="space-y-2">
+        <p className="text-sm font-medium text-gray-700">{item.question}</p>
+        <div className="flex items-center space-x-4">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              name={`${item.field}.yes`}
+              checked={formData.programEligibility[item.field as keyof typeof formData.programEligibility] === true}
+              onChange={handleChange}
+              className="mr-2"
+            />
+            Yes
+          </label>
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              name={`${item.field}.no`}
+              checked={formData.programEligibility[item.field as keyof typeof formData.programEligibility] === false}
+              onChange={handleChange}
+              className="mr-2"
+            />
+            No
+          </label>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
 
-          {/* Services Needed */}
-          <div className="border p-4 rounded">
-            <h2 className="font-bold mb-4">WHAT SERVICES IS PARTICIPANT IN NEED OF?</h2>
-            <div className="space-y-2">
-              {(Object.keys(formData.servicesNeeded) as Array<keyof ServicesNeeded>).map(service => (
-                <label key={service} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name={`servicesNeeded.${service}`}
-                    checked={formData.servicesNeeded[service]}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  {service.charAt(0).toUpperCase() + service.slice(1).replace(/([A-Z])/g, ' $1')}
-                </label>
-              ))}
-            </div>
+        {/* Services Needed */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold">What Services is Participant in Need Of?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="servicesNeeded"
+                value="Housing"
+                checked={formData.servicesNeeded.includes('Housing')}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Housing
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="servicesNeeded"
+                value="Employment/Financials"
+                checked={formData.servicesNeeded.includes('Employment/Financials')}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Employment/Financials
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="servicesNeeded"
+                value="Medical"
+                checked={formData.servicesNeeded.includes('Medical')}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Medical
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="servicesNeeded"
+                value="Assistance Services"
+                checked={formData.servicesNeeded.includes('Assistance Services')}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Assistance Services
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="servicesNeeded"
+                value="Other"
+                checked={formData.servicesNeeded.includes('Other')}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              Other
+            </label>
           </div>
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition-colors"
+          >
+            Submit
+          </button>
         </div>
       </form>
     </div>
