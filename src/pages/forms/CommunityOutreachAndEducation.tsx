@@ -46,12 +46,20 @@ interface CommunityOutreachFormData {
     immigrationStatus: string;
     intakeEligibilityNeeds: string;
   }>;
+<<<<<<< Updated upstream
   serviceSummary: Array<{
+=======
+  servicesProvided: Array<{
+>>>>>>> Stashed changes
     service: string;
     date: string;
     nextStep: string;
     notes: string;
   }>;
+<<<<<<< Updated upstream
+=======
+  servicesNeeded: string[];
+>>>>>>> Stashed changes
   otherServiceDescription: string;
 }
 
@@ -96,13 +104,22 @@ const CommunityOutreachAndEducation: React.FC = () => {
       releaseFormCompleted: false,
     },
     householdMembers: [],
+<<<<<<< Updated upstream
     serviceSummary: [],
+=======
+    servicesProvided: [],
+    servicesNeeded: [],
+>>>>>>> Stashed changes
     otherServiceDescription: '',
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
+<<<<<<< Updated upstream
 
+=======
+  
+>>>>>>> Stashed changes
     if (name.startsWith('participant.')) {
       const field = name.split('.')[1];
       setFormData((prev) => ({
@@ -121,6 +138,16 @@ const CommunityOutreachAndEducation: React.FC = () => {
           [field]: checked,
         },
       }));
+<<<<<<< Updated upstream
+=======
+    } else if (name === 'servicesNeeded') {
+      setFormData((prev) => ({
+        ...prev,
+        servicesNeeded: checked
+          ? [...prev.servicesNeeded, value]
+          : prev.servicesNeeded.filter((item) => item !== value),
+      }));
+>>>>>>> Stashed changes
     } else if (name === 'immigrationStatus') {
       setFormData((prev) => ({
         ...prev,
@@ -171,15 +198,24 @@ const CommunityOutreachAndEducation: React.FC = () => {
     }));
   };
 
+<<<<<<< Updated upstream
   const handleServiceSummaryChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const updatedServiceSummary = [...formData.serviceSummary];
     updatedServiceSummary[index] = {
       ...updatedServiceSummary[index],
+=======
+  const handleServiceProvidedChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const updatedServicesProvided = [...formData.servicesProvided];
+    updatedServicesProvided[index] = {
+      ...updatedServicesProvided[index],
+>>>>>>> Stashed changes
       [name]: value,
     };
     setFormData((prev) => ({
       ...prev,
+<<<<<<< Updated upstream
       serviceSummary: updatedServiceSummary,
     }));
   };
@@ -189,6 +225,17 @@ const CommunityOutreachAndEducation: React.FC = () => {
       ...prev,
       serviceSummary: [
         ...prev.serviceSummary,
+=======
+      servicesProvided: updatedServicesProvided,
+    }));
+  };
+
+  const addServiceProvided = () => {
+    setFormData((prev) => ({
+      ...prev,
+      servicesProvided: [
+        ...prev.servicesProvided,
+>>>>>>> Stashed changes
         {
           service: '',
           date: '',
@@ -199,11 +246,19 @@ const CommunityOutreachAndEducation: React.FC = () => {
     }));
   };
 
+<<<<<<< Updated upstream
   const removeServiceSummary = (index: number) => {
     const updatedServiceSummary = formData.serviceSummary.filter((_, i) => i !== index);
     setFormData((prev) => ({
       ...prev,
       serviceSummary: updatedServiceSummary,
+=======
+  const removeServiceProvided = (index: number) => {
+    const updatedServicesProvided = formData.servicesProvided.filter((_, i) => i !== index);
+    setFormData((prev) => ({
+      ...prev,
+      servicesProvided: updatedServicesProvided,
+>>>>>>> Stashed changes
     }));
   };
 
@@ -1273,6 +1328,7 @@ const CommunityOutreachAndEducation: React.FC = () => {
     </button>
   </div>
 
+<<<<<<< Updated upstream
 
 
 
@@ -1286,24 +1342,190 @@ const CommunityOutreachAndEducation: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Service Provided
+=======
+  {/* Needed Services */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700">
+      Please list needed services:
+    </label>
+    {[...Array(8)].map((_, index) => (
+      <input
+        key={index}
+        type="text"
+        name={`neededService${index + 1}`}
+        value={formData.servicesNeeded[index] || ""}
+        onChange={(e) => {
+          const updatedServicesNeeded = [...formData.servicesNeeded];
+          updatedServicesNeeded[index] = e.target.value;
+          setFormData((prev) => ({
+            ...prev,
+            servicesNeeded: updatedServicesNeeded,
+          }));
+        }}
+        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        placeholder={`Service ${index + 1}`}
+      />
+    ))}
+  </div>
+
+  {/* Services to Be Provided */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700">
+      What services will be provided to meet the participant's needs?
+    </label>
+    {[...Array(8)].map((_, index) => (
+      <input
+        key={index}
+        type="text"
+        name={`providedService${index + 1}`}
+        value={formData.servicesProvided[index]?.service || ""}
+        onChange={(e) => {
+          const updatedServicesProvided = [...formData.servicesProvided];
+          updatedServicesProvided[index] = {
+            ...updatedServicesProvided[index],
+            service: e.target.value,
+          };
+          setFormData((prev) => ({
+            ...prev,
+            servicesProvided: updatedServicesProvided,
+          }));
+        }}
+        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        placeholder={`Service ${index + 1}`}
+      />
+    ))}
+  </div>
+
+  {/* Categorize Services */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700">
+      Please categorize the services your organization will provide to meet the needs of the participant:
+    </label>
+    <div className="mt-2 space-y-2">
+      <label className="flex items-center">
+        <input
+          type="checkbox"
+          name="servicesNeeded"
+          value="Outreach"
+          checked={formData.servicesNeeded.includes("Outreach")}
+          onChange={handleChange}
+          className="mr-2"
+        />
+        Outreach
+      </label>
+      <label className="flex items-center">
+        <input
+          type="checkbox"
+          name="servicesNeeded"
+          value="Community & Cultural Orientation and Educational Workshops"
+          checked={formData.servicesNeeded.includes(
+            "Community & Cultural Orientation and Educational Workshops"
+          )}
+          onChange={handleChange}
+          className="mr-2"
+        />
+        Community & Cultural Orientation and Educational Workshops
+      </label>
+      <label className="flex items-center">
+        <input
+          type="checkbox"
+          name="servicesNeeded"
+          value="Information and Referrals"
+          checked={formData.servicesNeeded.includes("Information and Referrals")}
+          onChange={handleChange}
+          className="mr-2"
+        />
+        Information and Referrals
+      </label>
+      <label className="flex items-center">
+        <input
+          type="checkbox"
+          name="servicesNeeded"
+          value="Resource Navigation"
+          checked={formData.servicesNeeded.includes("Resource Navigation")}
+          onChange={handleChange}
+          className="mr-2"
+        />
+        Resource Navigation
+      </label>
+      <label className="flex items-center">
+        <input
+          type="checkbox"
+          name="servicesNeeded"
+          value="Support Services"
+          checked={formData.servicesNeeded.includes("Support Services")}
+          onChange={handleChange}
+          className="mr-2"
+        />
+        Support Services
+      </label>
+      <label className="flex items-center">
+        <input
+          type="checkbox"
+          name="servicesNeeded"
+          value="Other"
+          checked={formData.servicesNeeded.includes("Other")}
+          onChange={handleChange}
+          className="mr-2"
+        />
+        Other, please describe:
+        <input
+          type="text"
+          name="otherServiceDescription"
+          value={formData.otherServiceDescription || ""}
+          onChange={(e) => {
+            setFormData((prev) => ({
+              ...prev,
+              otherServiceDescription: e.target.value,
+            }));
+          }}
+          className="ml-2 p-1 border border-gray-300 rounded-md"
+          placeholder="Describe other service"
+        />
+      </label>
+    </div>
+  </div>
+</div>
+
+        {/* Service Summary */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold">Service Summary</h2>
+          {formData.servicesProvided.map((service, index) => (
+            <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Service Provided or will be provided
+>>>>>>> Stashed changes
                 </label>
                 <input
                   type="text"
                   name="service"
                   value={service.service}
+<<<<<<< Updated upstream
                   onChange={(e) => handleServiceSummaryChange(index, e)}
+=======
+                  onChange={(e) => handleServiceProvidedChange(index, e)}
+>>>>>>> Stashed changes
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
+<<<<<<< Updated upstream
                   Date of Service
+=======
+                  Date of Services
+>>>>>>> Stashed changes
                 </label>
                 <input
                   type="date"
                   name="date"
                   value={service.date}
+<<<<<<< Updated upstream
                   onChange={(e) => handleServiceSummaryChange(index, e)}
+=======
+                  onChange={(e) => handleServiceProvidedChange(index, e)}
+>>>>>>> Stashed changes
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
@@ -1315,26 +1537,42 @@ const CommunityOutreachAndEducation: React.FC = () => {
                   type="text"
                   name="nextStep"
                   value={service.nextStep}
+<<<<<<< Updated upstream
                   onChange={(e) => handleServiceSummaryChange(index, e)}
+=======
+                  onChange={(e) => handleServiceProvidedChange(index, e)}
+>>>>>>> Stashed changes
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
+<<<<<<< Updated upstream
                   Additional Notes/Comments
+=======
+                  Additional Notes/Comments/explanation about services
+>>>>>>> Stashed changes
                 </label>
                 <input
                   type="text"
                   name="notes"
                   value={service.notes}
+<<<<<<< Updated upstream
                   onChange={(e) => handleServiceSummaryChange(index, e)}
+=======
+                  onChange={(e) => handleServiceProvidedChange(index, e)}
+>>>>>>> Stashed changes
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
               <div>
                 <button
                   type="button"
+<<<<<<< Updated upstream
                   onClick={() => removeServiceSummary(index)}
+=======
+                  onClick={() => removeServiceProvided(index)}
+>>>>>>> Stashed changes
                   className="text-red-600 hover:text-red-800"
                 >
                   Remove Service
@@ -1344,10 +1582,17 @@ const CommunityOutreachAndEducation: React.FC = () => {
           ))}
           <button
             type="button"
+<<<<<<< Updated upstream
             onClick={addServiceSummary}
             className="text-indigo-600 hover:text-indigo-800"
           >
             + Add Service Summary
+=======
+            onClick={addServiceProvided}
+            className="text-indigo-600 hover:text-indigo-800"
+          >
+            + Add Service
+>>>>>>> Stashed changes
           </button>
         </div>
 

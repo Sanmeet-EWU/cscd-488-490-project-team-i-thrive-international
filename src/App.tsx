@@ -8,7 +8,11 @@ import ThriveIntakeForm from './pages/forms/ThriveIntakeForm';
 import CommunityOutreachAndEducation from './pages/forms/CommunityOutreachAndEducation';
 import DSHSConsentForm from './pages/forms/DSHSConsentForm';
 import CulturalIntegrationProgram from './pages/forms/CulturalIntegrationProgram';
+<<<<<<< Updated upstream
 import SoccerCampRegistration from './pages/forms/SoccerRegistrationCamp';
+=======
+import SoccerCampRegistration from './pages/forms/SoccerCampRegistration';
+>>>>>>> Stashed changes
 import EpiscopalPreferredCommunitiesIntakeForm from './pages/forms/EpiscopalPreferredCommunitiesIntakeForm';
 import PCGAPRegistrationForm from './pages/forms/PCGAPRegistrationForm';
 import YouthProgramRegistrationForm from './pages/forms/YouthProgramRegistrationForm';
