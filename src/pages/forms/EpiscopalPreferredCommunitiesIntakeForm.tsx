@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import React, { useState, ChangeEvent } from 'react';
 
 interface PersonalInfo {
@@ -229,6 +230,8 @@ const ThriveIntakeForm = () => {
                 </div>
               ))}
 =======
+=======
+>>>>>>> Stashed changes
 
 
 import React, { useState, ChangeEvent, FormEvent } from 'react';
@@ -732,11 +735,15 @@ const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTML
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 required
               />
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             </div>
           </div>
         </div>
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         {/* Page 2 */}
         <div className="space-y-6">
@@ -859,6 +866,8 @@ const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTML
             </div>
           </div>
 =======
+=======
+>>>>>>> Stashed changes
 {/* Intake Information */}
 <div className="space-y-4">
   <h2 className="text-xl font-bold">INTAKE INFORMATION</h2>
@@ -2652,6 +2661,9 @@ const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTML
           >
             Submit
           </button>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         </div>
       </form>
@@ -2660,7 +2672,11 @@ const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTML
 };
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export default ThriveIntakeForm;
+=======
+export default EpiscopalPreferredCommunitiesIntakeForm;
+>>>>>>> Stashed changes
 =======
 export default EpiscopalPreferredCommunitiesIntakeForm;
 >>>>>>> Stashed changes

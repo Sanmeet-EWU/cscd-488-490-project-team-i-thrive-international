@@ -1,7 +1,13 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import React, { useState, ChangeEvent } from 'react';
 
 interface ClientInfo {
+=======
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+
+interface DSHSConsentFormData {
+>>>>>>> Stashed changes
 =======
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 
@@ -14,6 +20,7 @@ interface DSHSConsentFormData {
   city: string;
   state: string;
   zipCode: string;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   telephone: string;
   otherInformation: string;
@@ -236,6 +243,10 @@ const DSHSConsentForm: React.FC = () => {
   parentRepresentativePhone: string;
   parentRepresentativeDate: string;
   parentRepresentativeAuthority: string;
+=======
+  telephoneNumber: string;
+  otherInformation: string;
+>>>>>>> Stashed changes
 }
 
 const DSHSConsentForm: React.FC = () => {
@@ -249,6 +260,7 @@ const DSHSConsentForm: React.FC = () => {
     zipCode: '',
     telephoneNumber: '',
     otherInformation: '',
+<<<<<<< Updated upstream
     consent: {
       useWithinDSHS: false,
       discloseToAgencies: false,
@@ -332,6 +344,16 @@ const DSHSConsentForm: React.FC = () => {
         [name]: type === 'checkbox' ? checked : value,
       }));
     }
+=======
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+>>>>>>> Stashed changes
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -446,6 +468,7 @@ const DSHSConsentForm: React.FC = () => {
           </div>
         </div>
 
+<<<<<<< Updated upstream
         {/* Consent Section */}
         <div className="space-y-4">
           <h2 className="text-xl font-bold">Consent</h2>
@@ -903,6 +926,8 @@ const DSHSConsentForm: React.FC = () => {
           </div>
         </div>
 
+=======
+>>>>>>> Stashed changes
         {/* Submit Button */}
         <div className="flex justify-end">
           <button
@@ -912,6 +937,9 @@ const DSHSConsentForm: React.FC = () => {
             Submit
           </button>
         </div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       </form>
     </div>
@@ -919,7 +947,11 @@ const DSHSConsentForm: React.FC = () => {
 };
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 export default DSHSConsentForm;
+=======
+export default DSHSConsentForm;
+>>>>>>> Stashed changes
 =======
 export default DSHSConsentForm;
 >>>>>>> Stashed changes

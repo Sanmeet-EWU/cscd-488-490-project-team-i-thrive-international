@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 import React, { useState, Dispatch, SetStateAction } from 'react';
+=======
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+>>>>>>> Stashed changes
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import AboutUs from './pages/AboutUs';
@@ -9,7 +14,11 @@ import CommunityOutreachAndEducation from './pages/forms/CommunityOutreachAndEdu
 import DSHSConsentForm from './pages/forms/DSHSConsentForm';
 import CulturalIntegrationProgram from './pages/forms/CulturalIntegrationProgram';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import SoccerCampRegistration from './pages/forms/SoccerRegistrationCamp';
+=======
+import SoccerCampRegistration from './pages/forms/SoccerCampRegistration';
+>>>>>>> Stashed changes
 =======
 import SoccerCampRegistration from './pages/forms/SoccerCampRegistration';
 >>>>>>> Stashed changes
@@ -17,6 +26,7 @@ import EpiscopalPreferredCommunitiesIntakeForm from './pages/forms/EpiscopalPref
 import PCGAPRegistrationForm from './pages/forms/PCGAPRegistrationForm';
 import YouthProgramRegistrationForm from './pages/forms/YouthProgramRegistrationForm';
 import ThriveDSHSConsentForm from './pages/forms/ThriveDSHSConsentForm';
+<<<<<<< Updated upstream
 
 export type PageType =
   | 'home'
@@ -69,11 +79,35 @@ const App: React.FC = () => {
     }
   };
 
+=======
+import CommunityOutreachMonthlyReport from './pages/forms/CommunityOutreachMonthlyReport';
+import DSHSCommunityOutreachAndEducationForm from './pages/forms/DSHSCommunityOutreachAndEducationForm';
+
+const App: React.FC = () => {
+>>>>>>> Stashed changes
   return (
-    <div className="font-sans">
-      <Navigation setCurrentPage={setCurrentPage} />
-      {renderPage()}
-    </div>
+    <Router>
+      <div className="font-sans">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/intake" element={<IntakeForms />} />
+          <Route path="/student-registration" element={<StudentRegistrationForm />} />
+          <Route path="/thrive-intake" element={<ThriveIntakeForm />} />
+          <Route path="/community-outreach" element={<CommunityOutreachAndEducation />} />
+          <Route path="/dshs-consent" element={<DSHSConsentForm />} />
+          <Route path="/cultural-integration" element={<CulturalIntegrationProgram />} />
+          <Route path="/soccer-camp" element={<SoccerCampRegistration />} />
+          <Route path="/episcopal-communities" element={<EpiscopalPreferredCommunitiesIntakeForm />} />
+          <Route path="/pcgap-registration" element={<PCGAPRegistrationForm />} />
+          <Route path="/youth-program" element={<YouthProgramRegistrationForm />} />
+          <Route path="/thrive-dshs-consent" element={<ThriveDSHSConsentForm />} />
+          <Route path="/community-outreach-report" element={<CommunityOutreachMonthlyReport />} />
+          <Route path="/dshs-community-outreach" element={<DSHSCommunityOutreachAndEducationForm />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
