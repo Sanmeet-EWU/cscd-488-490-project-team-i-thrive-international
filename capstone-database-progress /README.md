@@ -1,0 +1,1 @@
+The Thrive International database is designed to store and manage data related to refugees, students, community outreach programs, and various services offered. This database ensures secure, scalable, and efficient data management, integrating intake forms with AWS RDS PostgreSQL.
