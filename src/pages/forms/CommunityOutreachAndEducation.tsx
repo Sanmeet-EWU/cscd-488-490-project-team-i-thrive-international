@@ -46,28 +46,13 @@ interface CommunityOutreachFormData {
     immigrationStatus: string;
     intakeEligibilityNeeds: string;
   }>;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  serviceSummary: Array<{
-=======
   servicesProvided: Array<{
->>>>>>> Stashed changes
-=======
-  servicesProvided: Array<{
->>>>>>> Stashed changes
     service: string;
     date: string;
     nextStep: string;
     notes: string;
   }>;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
   servicesNeeded: string[];
->>>>>>> Stashed changes
-=======
-  servicesNeeded: string[];
->>>>>>> Stashed changes
   otherServiceDescription: string;
 }
 
@@ -112,31 +97,14 @@ const CommunityOutreachAndEducation: React.FC = () => {
       releaseFormCompleted: false,
     },
     householdMembers: [],
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    serviceSummary: [],
-=======
     servicesProvided: [],
     servicesNeeded: [],
->>>>>>> Stashed changes
-=======
-    servicesProvided: [],
-    servicesNeeded: [],
->>>>>>> Stashed changes
     otherServiceDescription: '',
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-=======
   
->>>>>>> Stashed changes
-=======
-  
->>>>>>> Stashed changes
     if (name.startsWith('participant.')) {
       const field = name.split('.')[1];
       setFormData((prev) => ({
@@ -155,11 +123,6 @@ const CommunityOutreachAndEducation: React.FC = () => {
           [field]: checked,
         },
       }));
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
     } else if (name === 'servicesNeeded') {
       setFormData((prev) => ({
         ...prev,
@@ -167,10 +130,6 @@ const CommunityOutreachAndEducation: React.FC = () => {
           ? [...prev.servicesNeeded, value]
           : prev.servicesNeeded.filter((item) => item !== value),
       }));
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     } else if (name === 'immigrationStatus') {
       setFormData((prev) => ({
         ...prev,
@@ -221,43 +180,15 @@ const CommunityOutreachAndEducation: React.FC = () => {
     }));
   };
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  const handleServiceSummaryChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const updatedServiceSummary = [...formData.serviceSummary];
-    updatedServiceSummary[index] = {
-      ...updatedServiceSummary[index],
-=======
-=======
->>>>>>> Stashed changes
   const handleServiceProvidedChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const updatedServicesProvided = [...formData.servicesProvided];
     updatedServicesProvided[index] = {
       ...updatedServicesProvided[index],
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
       [name]: value,
     };
     setFormData((prev) => ({
       ...prev,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      serviceSummary: updatedServiceSummary,
-    }));
-  };
-
-  const addServiceSummary = () => {
-    setFormData((prev) => ({
-      ...prev,
-      serviceSummary: [
-        ...prev.serviceSummary,
-=======
-=======
->>>>>>> Stashed changes
       servicesProvided: updatedServicesProvided,
     }));
   };
@@ -267,10 +198,6 @@ const CommunityOutreachAndEducation: React.FC = () => {
       ...prev,
       servicesProvided: [
         ...prev.servicesProvided,
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         {
           service: '',
           date: '',
@@ -281,25 +208,11 @@ const CommunityOutreachAndEducation: React.FC = () => {
     }));
   };
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  const removeServiceSummary = (index: number) => {
-    const updatedServiceSummary = formData.serviceSummary.filter((_, i) => i !== index);
-    setFormData((prev) => ({
-      ...prev,
-      serviceSummary: updatedServiceSummary,
-=======
-=======
->>>>>>> Stashed changes
   const removeServiceProvided = (index: number) => {
     const updatedServicesProvided = formData.servicesProvided.filter((_, i) => i !== index);
     setFormData((prev) => ({
       ...prev,
       servicesProvided: updatedServicesProvided,
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     }));
   };
 
@@ -1369,24 +1282,6 @@ const CommunityOutreachAndEducation: React.FC = () => {
     </button>
   </div>
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-
-
-  </div>
-
-        {/* Service Summary */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold">Service Summary</h2>
-          {formData.serviceSummary.map((service, index) => (
-            <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Service Provided
-=======
-=======
->>>>>>> Stashed changes
   {/* Needed Services */}
   <div>
     <label className="block text-sm font-medium text-gray-700">
@@ -1539,52 +1434,24 @@ const CommunityOutreachAndEducation: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Service Provided or will be provided
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                 </label>
                 <input
                   type="text"
                   name="service"
                   value={service.service}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  onChange={(e) => handleServiceSummaryChange(index, e)}
-=======
                   onChange={(e) => handleServiceProvidedChange(index, e)}
->>>>>>> Stashed changes
-=======
-                  onChange={(e) => handleServiceProvidedChange(index, e)}
->>>>>>> Stashed changes
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  Date of Service
-=======
                   Date of Services
->>>>>>> Stashed changes
-=======
-                  Date of Services
->>>>>>> Stashed changes
                 </label>
                 <input
                   type="date"
                   name="date"
                   value={service.date}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  onChange={(e) => handleServiceSummaryChange(index, e)}
-=======
                   onChange={(e) => handleServiceProvidedChange(index, e)}
->>>>>>> Stashed changes
-=======
-                  onChange={(e) => handleServiceProvidedChange(index, e)}
->>>>>>> Stashed changes
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
@@ -1596,58 +1463,26 @@ const CommunityOutreachAndEducation: React.FC = () => {
                   type="text"
                   name="nextStep"
                   value={service.nextStep}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  onChange={(e) => handleServiceSummaryChange(index, e)}
-=======
                   onChange={(e) => handleServiceProvidedChange(index, e)}
->>>>>>> Stashed changes
-=======
-                  onChange={(e) => handleServiceProvidedChange(index, e)}
->>>>>>> Stashed changes
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  Additional Notes/Comments
-=======
                   Additional Notes/Comments/explanation about services
->>>>>>> Stashed changes
-=======
-                  Additional Notes/Comments/explanation about services
->>>>>>> Stashed changes
                 </label>
                 <input
                   type="text"
                   name="notes"
                   value={service.notes}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  onChange={(e) => handleServiceSummaryChange(index, e)}
-=======
                   onChange={(e) => handleServiceProvidedChange(index, e)}
->>>>>>> Stashed changes
-=======
-                  onChange={(e) => handleServiceProvidedChange(index, e)}
->>>>>>> Stashed changes
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
               <div>
                 <button
                   type="button"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                  onClick={() => removeServiceSummary(index)}
-=======
                   onClick={() => removeServiceProvided(index)}
->>>>>>> Stashed changes
-=======
-                  onClick={() => removeServiceProvided(index)}
->>>>>>> Stashed changes
                   className="text-red-600 hover:text-red-800"
                 >
                   Remove Service
@@ -1657,23 +1492,10 @@ const CommunityOutreachAndEducation: React.FC = () => {
           ))}
           <button
             type="button"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            onClick={addServiceSummary}
-            className="text-indigo-600 hover:text-indigo-800"
-          >
-            + Add Service Summary
-=======
-=======
->>>>>>> Stashed changes
             onClick={addServiceProvided}
             className="text-indigo-600 hover:text-indigo-800"
           >
             + Add Service
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
           </button>
         </div>
 

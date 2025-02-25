@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream
-import React, { useState, Dispatch, SetStateAction } from 'react';
-=======
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
->>>>>>> Stashed changes
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import AboutUs from './pages/AboutUs';
@@ -13,78 +9,15 @@ import ThriveIntakeForm from './pages/forms/ThriveIntakeForm';
 import CommunityOutreachAndEducation from './pages/forms/CommunityOutreachAndEducation';
 import DSHSConsentForm from './pages/forms/DSHSConsentForm';
 import CulturalIntegrationProgram from './pages/forms/CulturalIntegrationProgram';
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import SoccerCampRegistration from './pages/forms/SoccerRegistrationCamp';
-=======
 import SoccerCampRegistration from './pages/forms/SoccerCampRegistration';
->>>>>>> Stashed changes
-=======
-import SoccerCampRegistration from './pages/forms/SoccerCampRegistration';
->>>>>>> Stashed changes
 import EpiscopalPreferredCommunitiesIntakeForm from './pages/forms/EpiscopalPreferredCommunitiesIntakeForm';
 import PCGAPRegistrationForm from './pages/forms/PCGAPRegistrationForm';
 import YouthProgramRegistrationForm from './pages/forms/YouthProgramRegistrationForm';
 import ThriveDSHSConsentForm from './pages/forms/ThriveDSHSConsentForm';
-<<<<<<< Updated upstream
-
-export type PageType =
-  | 'home'
-  | 'intake'
-  | 'about'
-  | 'studentRegistration'
-  | 'thriveIntake'
-  | 'communityOutreachAndEducation'
-  | 'dshsConsent'
-  | 'culturalIntegration'
-  | 'soccerCamp'
-  | 'episcopalPreferredCommunities'
-  | 'pcGapRegistration'
-  | 'youthProgramRegistration'
-  | 'thriveDSHSConsent';
-
-const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<PageType>('home');
-
-  const renderPage = (): JSX.Element => {
-    switch (currentPage) {
-      case 'home':
-        return <HomePage />;
-      case 'intake':
-        return <IntakeForms setCurrentPage={setCurrentPage} />; // Pass the prop here
-      case 'about':
-        return <AboutUs />;
-      case 'studentRegistration':
-        return <StudentRegistrationForm />;
-      case 'thriveIntake':
-        return <ThriveIntakeForm />;
-      case 'communityOutreachAndEducation':
-        return <CommunityOutreachAndEducation />;
-      case 'dshsConsent':
-        return <DSHSConsentForm />;
-      case 'culturalIntegration':
-        return <CulturalIntegrationProgram />;
-      case 'soccerCamp':
-        return <SoccerCampRegistration />;
-      case 'episcopalPreferredCommunities':
-        return <EpiscopalPreferredCommunitiesIntakeForm />;
-      case 'pcGapRegistration':
-        return <PCGAPRegistrationForm />;
-      case 'youthProgramRegistration':
-        return <YouthProgramRegistrationForm />;
-      case 'thriveDSHSConsent':
-        return <ThriveDSHSConsentForm />;
-      default:
-        return <HomePage />;
-    }
-  };
-
-=======
 import CommunityOutreachMonthlyReport from './pages/forms/CommunityOutreachMonthlyReport';
 import DSHSCommunityOutreachAndEducationForm from './pages/forms/DSHSCommunityOutreachAndEducationForm';
 
 const App: React.FC = () => {
->>>>>>> Stashed changes
   return (
     <Router>
       <div className="font-sans">

@@ -9,12 +9,9 @@ interface ThriveIntakeFormData {
     InternalReferral: boolean;
     ORIAOptions: string[]; // Sub-options for ORIA
     InternalReferralOptions: string[]; // Sub-options for Internal Referral
-<<<<<<< Updated upstream
-=======
     asylumDateGranted: string;
-    alienNumber: string; 
-    eligibilityDate: string; 
->>>>>>> Stashed changes
+    alienNumber: string; // Add this
+    eligibilityDate: string; // Add this
   };
   firstName: string;
   lastName: string;
@@ -51,12 +48,9 @@ const ThriveIntakeForm: React.FC = () => {
       InternalReferral: false,
       ORIAOptions: [],
       InternalReferralOptions: [],
-<<<<<<< Updated upstream
-=======
       asylumDateGranted: '',
       alienNumber: '',
       eligibilityDate: '',
->>>>>>> Stashed changes
     },
     firstName: '',
     lastName: '',
@@ -83,11 +77,9 @@ const ThriveIntakeForm: React.FC = () => {
     servicesNeeded: [],
   });
 
-<<<<<<< Updated upstream
-=======
-
   
->>>>>>> Stashed changes
+
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
   
@@ -108,8 +100,6 @@ const ThriveIntakeForm: React.FC = () => {
             [field]: checked,
           },
         }));
-<<<<<<< Updated upstream
-=======
       } else if (name.startsWith('ORIAOptions.')) {
         const option = name.split('.')[1];
         setFormData((prev) => ({
@@ -132,7 +122,6 @@ const ThriveIntakeForm: React.FC = () => {
               : prev.programType.InternalReferralOptions.filter((item) => item !== option),
           },
         }));
->>>>>>> Stashed changes
       } else if (name === 'servicesNeeded') {
         setFormData((prev) => ({
           ...prev,
@@ -167,11 +156,13 @@ const ThriveIntakeForm: React.FC = () => {
     }
   };
 
-<<<<<<< Updated upstream
-=======
 
 
->>>>>>> Stashed changes
+
+
+
+
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Thrive Intake Form Data:', formData);
@@ -215,11 +206,6 @@ const ThriveIntakeForm: React.FC = () => {
 
         {/* Program Type */}
         <div className="space-y-4">
-<<<<<<< Updated upstream
-=======
-          {/* Participant Information */}
-        </div>
->>>>>>> Stashed changes
           <label className="block text-sm font-medium text-gray-700">
             Program Type
           </label>
@@ -257,53 +243,11 @@ const ThriveIntakeForm: React.FC = () => {
           </div>
 
           {/* ORIA Sub-Options */}
-          {formData.programType.ORIA && (
-<<<<<<< Updated upstream
-            <div className="ml-6 space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                ORIA Options
-              </label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {['Affordable Housing', 'Teen & Kid Closet', 'Medical', 'Other'].map((option) => (
-                  <label key={option} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      name={`ORIAOptions.${option}`}
-                      checked={formData.programType.ORIAOptions.includes(option)}
-                      onChange={handleChange}
-                      className="mr-2"
-                    />
-                    {option}
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
+          
 
-          {/* Internal Referral Sub-Options */}
-          {formData.programType.InternalReferral && (
-            <div className="ml-6 space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
-                Internal Referral Options
-              </label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {['Economic Empowerment', 'Women\'s Empowerment', 'Youth Empowerment'].map((option) => (
-                  <label key={option} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      name={`InternalReferralOptions.${option}`}
-                      checked={formData.programType.InternalReferralOptions.includes(option)}
-                      onChange={handleChange}
-                      className="mr-2"
-                    />
-                    {option}
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-=======
+
+
+          {formData.programType.ORIA && (
   <div className="ml-6 space-y-2">
     <label className="block text-sm font-medium text-gray-700">
       ORIA Options
@@ -324,7 +268,7 @@ const ThriveIntakeForm: React.FC = () => {
     </div>
   </div>
 )}
-          {/* Internal Referral Sub-Options */}
+
 {formData.programType.InternalReferral && (
   <div className="ml-6 space-y-2">
     <label className="block text-sm font-medium text-gray-700">
@@ -348,7 +292,12 @@ const ThriveIntakeForm: React.FC = () => {
 )}
 
 
->>>>>>> Stashed changes
+
+
+
+
+
+        </div>
 
         {/* Participant Information */}
         <div className="space-y-4">
@@ -461,6 +410,8 @@ const ThriveIntakeForm: React.FC = () => {
           </div>
         </div>
 
+
+
 {/* Current Immigration Status */}
 <div className="space-y-4">
   <h2 className="text-xl font-bold">Current Immigration Status</h2>
@@ -492,11 +443,7 @@ const ThriveIntakeForm: React.FC = () => {
         {status === 'Asylum (Approved and granted)' && formData.immigrationStatus.includes(status) && (
           <div className="ml-6 mt-2">
             <label className="block text-sm font-medium text-gray-700">
-<<<<<<< Updated upstream
-              Date granted
-=======
               Date Granted
->>>>>>> Stashed changes
             </label>
             <input
               type="date"
@@ -510,77 +457,6 @@ const ThriveIntakeForm: React.FC = () => {
       </div>
     ))}
   </div>
-<<<<<<< Updated upstream
-</div>
-
-{/* Program Eligibility Determination (DSHS ONLY) */}
-<div className="space-y-4">
-  <h2 className="text-xl font-bold">Program Eligibility Determination (DSHS ONLY)</h2>
-  <div className="space-y-4">
-    {[
-      {
-        question: 'Is the participant receiving services from resettlement agencies, such as Reception and Placement, Matching Grant, and/or Preferred Community Programs?',
-        field: 'receivingServices',
-      },
-      {
-        question: 'Is the participant 16 years of age or older?',
-        field: 'ageOver16',
-      },
-      {
-        question: 'Does the participant live in Washington?',
-        field: 'livesInWashington',
-      },
-      {
-        question: 'Did the participant arrive in the United States on or after July 1, 2021?',
-        field: 'arrivedAfterJuly2021',
-      },
-      {
-        question: 'Does the participant have an approved immigration status?',
-        field: 'approvedImmigrationStatus',
-      },
-      {
-        question: 'Completed Consent Form:',
-        field: 'consentFormCompleted',
-      },
-      {
-        question: 'Completed Release of information (Thrive and DSHS)',
-        field: 'releaseFormCompleted',
-      },
-      {
-        question: 'Is a copy of the immigration status collected and kept in the participant\'s file?',
-        field: 'immigrationStatusCopy',
-      },
-    ].map((item) => (
-      <div key={item.field} className="space-y-2">
-        <p className="text-sm font-medium text-gray-700">{item.question}</p>
-        <div className="flex items-center space-x-4">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              name={`${item.field}.yes`}
-              checked={formData.programEligibility[item.field as keyof typeof formData.programEligibility] === true}
-              onChange={handleChange}
-              className="mr-2"
-            />
-            Yes
-          </label>
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              name={`${item.field}.no`}
-              checked={formData.programEligibility[item.field as keyof typeof formData.programEligibility] === false}
-              onChange={handleChange}
-              className="mr-2"
-            />
-            No
-          </label>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
-
-=======
 
   {/* Alien # and Eligibility Date */}
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
@@ -611,6 +487,11 @@ const ThriveIntakeForm: React.FC = () => {
   </div>
 </div>
 
+
+
+
+
+
 {/* Program Eligibility Determination (DSHS ONLY) */}
 <div className="space-y-4">
   <h2 className="text-xl font-bold">Program Eligibility Determination (DSHS ONLY)</h2>
@@ -678,7 +559,6 @@ const ThriveIntakeForm: React.FC = () => {
   </div>
 </div>
 
->>>>>>> Stashed changes
         {/* Services Needed */}
         <div className="space-y-4">
           <h2 className="text-xl font-bold">What Services is Participant in Need Of?</h2>
