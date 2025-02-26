@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
+import { submitForm } from "../../services/apiService"; // Import the API function
 
 interface NewStudentRegistrationFormData {
   student: {
@@ -81,9 +82,20 @@ const NewStudentRegistrationForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('New Student Registration Form Data:', formData);
+  
+    try {
+      const response = await submitForm("NewStudentRegistration", formData);
+      alert("✅ Form submitted successfully!");
+      console.log("Response:", response);
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("❌ Failed to submit form: " + error.message);
+      } else {
+        alert("❌ Failed to submit form");
+      }
+    }
   };
 
   return (

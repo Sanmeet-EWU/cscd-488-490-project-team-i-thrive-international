@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
+import { submitForm } from "../../services/apiService";
 
 interface ThriveIntakeFormData {
   intakeDate: string;
@@ -163,9 +164,23 @@ const ThriveIntakeForm: React.FC = () => {
 
 
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Thrive Intake Form Data:', formData);
+  
+    try {
+      const response = await submitForm("ThriveIntakeRegistration", formData);
+  
+      // ✅ Ensure JSON response is checked
+      if (!response || !response.message) {
+        throw new Error("Invalid server response");
+      }
+  
+      alert("✅ Thrive Intake Form submitted successfully!");
+      console.log("Response:", response);
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      alert(`❌ Failed to submit form: ${errorMessage}`);
+    }
   };
 
   return (

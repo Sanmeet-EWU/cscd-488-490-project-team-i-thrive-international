@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
+import { submitForm } from "../../services/apiService";
 
 interface CommunityOutreachFormData {
   organizationName: string;
@@ -216,9 +217,17 @@ const CommunityOutreachAndEducation: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Community Outreach and Education Form Data:', formData);
+  
+    try {
+      const response = await submitForm("CommunityOutreachIntake", formData);
+      alert("✅ Community Outreach Intake Form submitted successfully!");
+      console.log("Response:", response);
+    } catch (error) {
+      alert("❌ Failed to submit form: " + (error as any).message);
+    }
   };
 
   return (
