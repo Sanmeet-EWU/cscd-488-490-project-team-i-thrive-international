@@ -159,6 +159,7 @@ const ThriveIntakeForm: React.FC = () => {
 
 
 
+  
 
 
 
@@ -166,22 +167,45 @@ const ThriveIntakeForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    try {
-      const response = await submitForm("ThriveIntakeRegistration", formData);
-  
-      // ✅ Ensure JSON response is checked
-      if (!response || !response.message) {
-        throw new Error("Invalid server response");
-      }
-  
-      alert("✅ Thrive Intake Form submitted successfully!");
-      console.log("Response:", response);
-    } catch (error) {
-      const errorMessage = (error as Error).message;
-      alert(`❌ Failed to submit form: ${errorMessage}`);
-    }
+
+    const formattedData = {
+      ...formData,
+      intakeDate: formData.intakeDate ? new Date(formData.intakeDate).toISOString() : new Date().toISOString(),  // Ensure intakeDate is never null
+      dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString() : new Date().toISOString(),  // Ensure dateOfBirth is never null
+      asylumDateGranted: formData.asylumDateGranted ? new Date(formData.asylumDateGranted).toISOString() : null,
+      eligibilityDate: formData.eligibilityDate ? new Date(formData.eligibilityDate).toISOString() : null,
+      programType: {
+          ...formData.programType,
+          asylumDateGranted: formData.programType.asylumDateGranted
+              ? new Date(formData.programType.asylumDateGranted).toISOString()
+              : null,
+          eligibilityDate: formData.programType.eligibilityDate
+              ? new Date(formData.programType.eligibilityDate).toISOString()
+              : null,
+      },
   };
+  
+
+    console.log("📤 Submitting formatted data:", JSON.stringify(formattedData, null, 2));
+
+    try {
+        const response = await submitForm("ThriveIntakeRegistration", formattedData);
+        alert("✅ Thrive Intake Form submitted successfully!");
+        console.log("✅ Response:", response);
+    } catch (error) {
+        console.error("❌ Error submitting form:", error);
+        alert(`❌ Failed to submit form: ${error}`);
+    }
+};
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
