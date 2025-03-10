@@ -3,7 +3,8 @@ import { submitForm } from "../../services/apiService"; // Import the API functi
 
 interface NewStudentRegistrationFormData {
   student: {
-    fullName: string;
+    firstName: string;
+    lastName: string;
     birthDate: string;
     address: string;
     gender: string;
@@ -32,7 +33,8 @@ interface NewStudentRegistrationFormData {
 const NewStudentRegistrationForm: React.FC = () => {
   const [formData, setFormData] = useState<NewStudentRegistrationFormData>({
     student: {
-      fullName: '',
+      firstName: '',
+      lastName: '',
       birthDate: '',
       address: '',
       gender: '',
@@ -107,11 +109,22 @@ const NewStudentRegistrationForm: React.FC = () => {
           <h2 className="text-xl font-bold">Student Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700">First Name</label>
               <input
                 type="text"
-                name="student.fullName"
-                value={formData.student.fullName}
+                name="student.firstName"
+                value={formData.student.firstName}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Last Name</label>
+              <input
+                type="text"
+                name="student.lastName"
+                value={formData.student.lastName}
                 onChange={handleChange}
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 required
