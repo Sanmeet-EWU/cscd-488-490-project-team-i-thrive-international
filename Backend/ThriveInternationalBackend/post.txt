@@ -49,3 +49,31 @@ CREATE TABLE services (
     next_step VARCHAR(250),
     notes TEXT
 );
+
+
+
+
+CREATE TABLE "student" (
+    refugee_id INTEGER PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    birth_date DATE NOT NULL,
+    address TEXT NOT NULL,
+    gender VARCHAR(50) NOT NULL,
+    school VARCHAR(255) NOT NULL,
+    current_grade VARCHAR(50) NOT NULL,
+    languages_spoken VARCHAR(255) NOT NULL,
+    country_of_origin VARCHAR(100) NOT NULL,
+    parent_name VARCHAR(255) NOT NULL,
+    parent_languages_spoken VARCHAR(255) NOT NULL,
+    parent_phone_number VARCHAR(20) NOT NULL,
+    parent_email VARCHAR(255) NOT NULL,
+    preferred_contact_method VARCHAR(50) NOT NULL,
+    insurance_liability BOOLEAN NOT NULL,
+    insurance_liability_signature VARCHAR(255) NOT NULL,
+    waiver_and_release BOOLEAN NOT NULL,
+    waiver_and_release_signature VARCHAR(255) NOT NULL,
+    media_release BOOLEAN NOT NULL,
+    media_release_signature VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_refugee FOREIGN KEY (refugee_id) REFERENCES "refugee" (refugee_id)
+);

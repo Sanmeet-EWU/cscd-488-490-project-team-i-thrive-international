@@ -1,7 +1,8 @@
-import React, { useState, ChangeEvent } from 'react';
-import { submitForm } from "../../services/apiService"; // Import the API function
+import React, { useState, ChangeEvent, useEffect } from 'react';
+import { submitForm, fetchRefugeeById } from "../../services/apiService";
 
 interface NewStudentRegistrationFormData {
+  refugeeId: number;
   student: {
     firstName: string;
     lastName: string;
@@ -32,6 +33,7 @@ interface NewStudentRegistrationFormData {
 
 const NewStudentRegistrationForm: React.FC = () => {
   const [formData, setFormData] = useState<NewStudentRegistrationFormData>({
+    refugeeId: 0,
     student: {
       firstName: '',
       lastName: '',
@@ -59,55 +61,142 @@ const NewStudentRegistrationForm: React.FC = () => {
       mediaReleaseSignature: '',
     },
   });
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch refugee data when refugeeId changes
+  useEffect(() => {
+    const fetchRefugeeData = async () => {
+      if (formData.refugeeId >= 10000 && formData.refugeeId <= 99999) {
+        try {
+          const refugee = await fetchRefugeeById(formData.refugeeId);
+          setFormData((prev) => ({
+            ...prev,
+            student: {
+              ...prev.student,
+              firstName: refugee.firstName || '',
+              lastName: refugee.lastName || '',
+              birthDate: refugee.dateOfBirth ? new Date(refugee.dateOfBirth).toISOString().split('T')[0] : '',
+              address: refugee.address || '',
+              gender: refugee.gender || '',
+              countryOfOrigin: refugee.countryOfOrigin || '',
+            },
+          }));
+          setError(null);
+        } catch (err) {
+          setError('Invalid Refugee ID or data not found.');
+          setFormData((prev) => ({
+            ...prev,
+            student: {
+              ...prev.student,
+              firstName: '',
+              lastName: '',
+              birthDate: '',
+              address: '',
+              gender: '',
+              countryOfOrigin: '',
+            },
+          }));
+        }
+      }
+    };
+
+    if (formData.refugeeId !== 0) {
+      fetchRefugeeData();
+    }
+  }, [formData.refugeeId]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
 
-    if (type === 'checkbox') {
-      const [section, field] = name.split('.');
+    if (name === 'refugeeId') {
+      setFormData((prev) => ({
+        ...prev,
+        refugeeId: parseInt(value) || 0,
+      }));
+    } else if (type === 'checkbox') {
+      const [section, field] = name.split('.') as [keyof Omit<NewStudentRegistrationFormData, 'refugeeId'>, string];
       setFormData((prev) => ({
         ...prev,
         [section]: {
-          ...prev[section as keyof typeof formData],
+          ...prev[section],
           [field]: checked,
         },
       }));
     } else {
-      const [section, field] = name.split('.');
+      const [section, field] = name.split('.') as [keyof Omit<NewStudentRegistrationFormData, 'refugeeId'>, string];
       setFormData((prev) => ({
         ...prev,
         [section]: {
-          ...prev[section as keyof typeof formData],
+          ...prev[section],
           [field]: value,
         },
       }));
     }
   };
 
+  
+
+
+
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
+    const formattedData = {
+      ...formData,
+      student: {
+        ...formData.student,
+        birthDate: formData.student.birthDate ? new Date(formData.student.birthDate).toISOString() : '',
+      },
+    };
+  
+    console.log("📤 Submitting formatted data:", JSON.stringify(formattedData, null, 2));
+  
     try {
-      const response = await submitForm("NewStudentRegistration", formData);
-      alert("✅ Form submitted successfully!");
-      console.log("Response:", response);
-    } catch (error) {
-      if (error instanceof Error) {
-        alert("❌ Failed to submit form: " + error.message);
-      } else {
-        alert("❌ Failed to submit form");
-      }
+      const response = await submitForm("NewStudentRegistration", formattedData);
+      alert(`✅ New Student Registration Form submitted successfully for Refugee ID: ${formData.refugeeId}!`);
+      console.log("✅ Response:", response);
+    } catch (error: any) {
+      console.error("❌ Error submitting form:", error.response?.data || error.message);
+      alert(`❌ Failed to submit form: ${error.response?.data?.detail || error.message}`);
     }
   };
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-bold text-center mb-6">New Student Registration Form</h1>
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Student Details */}
         <div className="space-y-4">
           <h2 className="text-xl font-bold">Student Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Refugee ID</label>
+              <input
+                type="number"
+                name="refugeeId"
+                value={formData.refugeeId === 0 ? '' : formData.refugeeId}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                placeholder="Enter 5-digit Refugee ID"
+                required
+                min="10000"
+                max="99999"
+              />
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">First Name</label>
               <input
@@ -115,7 +204,7 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.firstName"
                 value={formData.student.firstName}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
                 required
               />
             </div>
@@ -126,7 +215,7 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.lastName"
                 value={formData.student.lastName}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
                 required
               />
             </div>
@@ -137,7 +226,7 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.birthDate"
                 value={formData.student.birthDate}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
                 required
               />
             </div>
@@ -148,7 +237,7 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.address"
                 value={formData.student.address}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
                 required
               />
             </div>
@@ -159,7 +248,18 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.gender"
                 value={formData.student.gender}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Country of Origin</label>
+              <input
+                type="text"
+                name="student.countryOfOrigin"
+                value={formData.student.countryOfOrigin}
+                onChange={handleChange}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
                 required
               />
             </div>
@@ -191,17 +291,6 @@ const NewStudentRegistrationForm: React.FC = () => {
                 type="text"
                 name="student.languagesSpoken"
                 value={formData.student.languagesSpoken}
-                onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Country of Origin</label>
-              <input
-                type="text"
-                name="student.countryOfOrigin"
-                value={formData.student.countryOfOrigin}
                 onChange={handleChange}
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                 required
@@ -273,9 +362,8 @@ const NewStudentRegistrationForm: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Liability */}
-        <div className="space-y-4">
+{/* Liability */}
+<div className="space-y-4">
           <h2 className="text-xl font-bold">Liability</h2>
 
           {/* Insurance Liability */}

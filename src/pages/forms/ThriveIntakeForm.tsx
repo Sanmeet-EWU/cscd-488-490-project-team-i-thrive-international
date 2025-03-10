@@ -161,43 +161,47 @@ const ThriveIntakeForm: React.FC = () => {
 
   
 
+  
+
+
+
 
 
 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const formattedData = {
       ...formData,
-      intakeDate: formData.intakeDate ? new Date(formData.intakeDate).toISOString() : new Date().toISOString(),  // Ensure intakeDate is never null
-      dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString() : new Date().toISOString(),  // Ensure dateOfBirth is never null
+      intakeDate: formData.intakeDate ? new Date(formData.intakeDate).toISOString() : new Date().toISOString(),
+      dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString() : new Date().toISOString(),
       asylumDateGranted: formData.asylumDateGranted ? new Date(formData.asylumDateGranted).toISOString() : null,
       eligibilityDate: formData.eligibilityDate ? new Date(formData.eligibilityDate).toISOString() : null,
       programType: {
-          ...formData.programType,
-          asylumDateGranted: formData.programType.asylumDateGranted
-              ? new Date(formData.programType.asylumDateGranted).toISOString()
-              : null,
-          eligibilityDate: formData.programType.eligibilityDate
-              ? new Date(formData.programType.eligibilityDate).toISOString()
-              : null,
+        ...formData.programType,
+        asylumDateGranted: formData.programType.asylumDateGranted
+          ? new Date(formData.programType.asylumDateGranted).toISOString()
+          : null,
+        eligibilityDate: formData.programType.eligibilityDate
+          ? new Date(formData.programType.eligibilityDate).toISOString()
+          : null,
       },
-  };
+    };
   
-
     console.log("📤 Submitting formatted data:", JSON.stringify(formattedData, null, 2));
-
+  
     try {
-        const response = await submitForm("ThriveIntakeRegistration", formattedData);
-        alert("✅ Thrive Intake Form submitted successfully!");
-        console.log("✅ Response:", response);
+      const response = await submitForm("ThriveIntake", formattedData);
+      const { refugeeId } = response; // Extract refugeeId from response
+      const successMessage = `Thank You ${formattedData.firstName} ${formattedData.lastName}, Thrive Intake Form submitted successfully! Your unique Refugee Id is: ${refugeeId}.`;
+      alert(successMessage);
+      console.log("✅ Response:", response);
     } catch (error) {
-        console.error("❌ Error submitting form:", error);
-        alert(`❌ Failed to submit form: ${error}`);
+      console.error("❌ Error submitting form:", error);
+      alert(`❌ Failed to submit form: ${error}`);
     }
-};
-
+  };
 
 
 

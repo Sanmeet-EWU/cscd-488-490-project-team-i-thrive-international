@@ -1,14 +1,15 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace ThriveInternationalBackend.Models
 {
-    [Table("refugee")]
+    [Table("refugee")] // Exact lowercase with quotes
     public class Refugee
     {
         [Key]
         [Column("refugee_id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RefugeeId { get; set; }
 
         [Required]
@@ -42,5 +43,14 @@ namespace ThriveInternationalBackend.Models
 
         [Column("address")]
         public string? Address { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<IntakeForm>? IntakeForms { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<Services>? Services { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<HouseholdMember>? HouseholdMembers { get; set; }
     }
 }

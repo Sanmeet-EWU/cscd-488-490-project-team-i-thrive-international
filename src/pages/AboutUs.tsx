@@ -9,10 +9,9 @@ const AboutUs: React.FC = () => {
         </h1>
         <div className="bg-white rounded-lg shadow-xl p-8">
           <p className="text-xl text-gray-700 leading-relaxed">
-            Thrive International is dedicated to helping refugees establish new lives
-            through comprehensive support services and community integration programs.
-            Our mission is to empower individuals and families to rebuild their lives
-            with dignity and purpose.
+          Thrive International was conceived in late 2021 by a diverse group of innovators who share a vision for thriving multicultural communities. Some were born just a few miles from where they live now, while others have circled the globe, experiencing life in multiple countries. All have witnessed the transformative power of cross-cultural relationships, enriching both their individual lives and the communities around them.
+
+Based in Spokane, WA, Thrive International is initially focusing on empowering communities in Eastern Washington and North Idaho, as well as expanding its efforts to include Tacoma. We recognize that barriers to thriving extend beyond regional borders, so we are also engaged in initiatives to empower immigrants and citizens in other U.S. communities and internationally, collaborating with a network of trusted partners to drive meaningful change.
           </p>
         </div>
       </div>
