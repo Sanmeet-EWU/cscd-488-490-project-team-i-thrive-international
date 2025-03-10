@@ -1,0 +1,6 @@
+@ThriveInternationalBackend_HostAddress = http://localhost:5085
+
+GET {{ThriveInternationalBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
