@@ -62,6 +62,7 @@ const NewStudentRegistrationForm: React.FC = () => {
     },
   });
   const [error, setError] = useState<string | null>(null);
+  const [isAutofilled, setIsAutofilled] = useState<boolean>(false); // Track if fields are autofilled
 
   // Fetch refugee data when refugeeId changes
   useEffect(() => {
@@ -81,6 +82,7 @@ const NewStudentRegistrationForm: React.FC = () => {
               countryOfOrigin: refugee.countryOfOrigin || '',
             },
           }));
+          setIsAutofilled(true); // Set to true when data is fetched
           setError(null);
         } catch (err) {
           setError('Invalid Refugee ID or data not found.');
@@ -96,6 +98,7 @@ const NewStudentRegistrationForm: React.FC = () => {
               countryOfOrigin: '',
             },
           }));
+          setIsAutofilled(false); // Reset if fetch fails
         }
       }
     };
@@ -134,15 +137,9 @@ const NewStudentRegistrationForm: React.FC = () => {
     }
   };
 
-  
-
-
-
-
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const formattedData = {
       ...formData,
       student: {
@@ -150,9 +147,9 @@ const NewStudentRegistrationForm: React.FC = () => {
         birthDate: formData.student.birthDate ? new Date(formData.student.birthDate).toISOString() : '',
       },
     };
-  
+
     console.log("📤 Submitting formatted data:", JSON.stringify(formattedData, null, 2));
-  
+
     try {
       const response = await submitForm("NewStudentRegistration", formattedData);
       alert(`✅ New Student Registration Form submitted successfully for Refugee ID: ${formData.refugeeId}!`);
@@ -162,17 +159,6 @@ const NewStudentRegistrationForm: React.FC = () => {
       alert(`❌ Failed to submit form: ${error.response?.data?.detail || error.message}`);
     }
   };
-
-
-
-
-
-
-
-
-
-
-
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
@@ -204,7 +190,8 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.firstName"
                 value={formData.student.firstName}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                className={`mt-1 block w-full p-2 border border-gray-300 rounded-md ${isAutofilled ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={isAutofilled}
                 required
               />
             </div>
@@ -215,7 +202,8 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.lastName"
                 value={formData.student.lastName}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                className={`mt-1 block w-full p-2 border border-gray-300 rounded-md ${isAutofilled ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={isAutofilled}
                 required
               />
             </div>
@@ -226,7 +214,8 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.birthDate"
                 value={formData.student.birthDate}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                className={`mt-1 block w-full p-2 border border-gray-300 rounded-md ${isAutofilled ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={isAutofilled}
                 required
               />
             </div>
@@ -237,7 +226,8 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.address"
                 value={formData.student.address}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                className={`mt-1 block w-full p-2 border border-gray-300 rounded-md ${isAutofilled ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={isAutofilled}
                 required
               />
             </div>
@@ -248,7 +238,8 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.gender"
                 value={formData.student.gender}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                className={`mt-1 block w-full p-2 border border-gray-300 rounded-md ${isAutofilled ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={isAutofilled}
                 required
               />
             </div>
@@ -259,7 +250,8 @@ const NewStudentRegistrationForm: React.FC = () => {
                 name="student.countryOfOrigin"
                 value={formData.student.countryOfOrigin}
                 onChange={handleChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-100"
+                className={`mt-1 block w-full p-2 border border-gray-300 rounded-md ${isAutofilled ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                disabled={isAutofilled}
                 required
               />
             </div>
@@ -362,8 +354,9 @@ const NewStudentRegistrationForm: React.FC = () => {
             </div>
           </div>
         </div>
-{/* Liability */}
-<div className="space-y-4">
+
+        {/* Liability */}
+        <div className="space-y-4">
           <h2 className="text-xl font-bold">Liability</h2>
 
           {/* Insurance Liability */}

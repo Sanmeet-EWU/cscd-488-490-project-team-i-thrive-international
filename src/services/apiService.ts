@@ -8,12 +8,18 @@ export const submitForm = async (formType: string, data: any) => {
       const refugeeData = {
         firstName: data.firstName,
         lastName: data.lastName,
-        dateOfBirth: data.dateOfBirth, // Already in ISO format from frontend
+        dateOfBirth: data.dateOfBirth, // Expected in "YYYY-MM-DD" format from frontend
         gender: data.gender,
         countryOfOrigin: data.countryOfOrigin,
         phoneNumber: data.phoneNumber,
         emailAddress: data.emailAddress,
-        address: data.address
+        address: data.address,
+        familyMembers: data.familyMembers?.map((fm: any) => ({
+          firstName: fm.firstName,
+          lastName: fm.lastName,
+          refugeeId: parseInt(fm.refugeeId), // Convert to int
+          relationship: fm.relationship
+        })) || []
       };
 
       const refugeeResponse = await axios.post(`${API_BASE_URL}/refugees`, refugeeData);
@@ -40,7 +46,7 @@ export const submitForm = async (formType: string, data: any) => {
         refugeeId: data.refugeeId,
         firstName: data.student.firstName,
         lastName: data.student.lastName,
-        birthDate: data.student.birthDate ? data.student.birthDate.split('T')[0] : null, // Convert to "YYYY-MM-DD"
+        birthDate: data.student.birthDate ? data.student.birthDate.split('T')[0] : null, // "YYYY-MM-DD"
         address: data.student.address,
         gender: data.student.gender,
         school: data.student.school,
@@ -60,7 +66,7 @@ export const submitForm = async (formType: string, data: any) => {
         mediaReleaseSignature: data.liability.mediaReleaseSignature
       };
 
-      console.log("Submitting student data:", JSON.stringify(studentData, null, 2)); // Log payload before sending
+      console.log("Submitting student data:", JSON.stringify(studentData, null, 2));
       const studentResponse = await axios.post(`${API_BASE_URL}/students`, studentData);
       return studentResponse.data;
     }
@@ -83,6 +89,20 @@ export const fetchRefugeeById = async (refugeeId: number) => {
     return response.data;
   } catch (error: any) {
     console.error('Error fetching refugee:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status
+    });
+    throw error;
+  }
+};
+
+export const fetchFamilyMembers = async (refugeeId: number, firstName: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/family/${refugeeId}/${firstName}`);
+    return response.data; // Now returns { parentName, child }
+  } catch (error: any) {
+    console.error('Error fetching family members:', {
       message: error.message,
       response: error.response?.data,
       status: error.response?.status

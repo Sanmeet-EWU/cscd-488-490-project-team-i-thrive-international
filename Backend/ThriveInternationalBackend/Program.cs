@@ -4,7 +4,7 @@ using ThriveInternationalBackend.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(); // Registers all controllers, including FamilyController
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -15,14 +15,17 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("http://localhost:3000")
                .AllowAnyHeader()
-               .AllowAnyMethod(); // Explicitly allows POST, OPTIONS, etc.
+               .AllowAnyMethod(); // Explicitly allows GET, POST, etc.
     });
 });
 
-// Configure PostgreSQL Connection
+// Configure PostgreSQL Connection and DbContext
 builder.Services.AddDbContext<ThriveDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+// Optional: Explicitly register FamilyController (not required, but for clarity)
+// builder.Services.AddScoped<ThriveInternationalBackend.Controllers.FamilyController>();
 
 var app = builder.Build();
 
@@ -37,5 +40,5 @@ app.UseCors("AllowLocalhost3000");
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.MapControllers();
+app.MapControllers(); // Maps FamilyController along with others
 app.Run();

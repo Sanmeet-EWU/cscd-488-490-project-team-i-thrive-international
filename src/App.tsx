@@ -1,3 +1,4 @@
+// src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
@@ -16,6 +17,7 @@ import YouthProgramRegistrationForm from './pages/forms/YouthProgramRegistration
 import ThriveDSHSConsentForm from './pages/forms/ThriveDSHSConsentForm';
 import CommunityOutreachMonthlyReport from './pages/forms/CommunityOutreachMonthlyReport';
 import DSHSCommunityOutreachAndEducationForm from './pages/forms/DSHSCommunityOutreachAndEducationForm';
+import FamilyTracker from './pages/FamilyTracker'; // Add this import
 
 const App: React.FC = () => {
   return (
@@ -38,6 +40,7 @@ const App: React.FC = () => {
           <Route path="/thrive-dshs-consent" element={<ThriveDSHSConsentForm />} />
           <Route path="/community-outreach-report" element={<CommunityOutreachMonthlyReport />} />
           <Route path="/dshs-community-outreach" element={<DSHSCommunityOutreachAndEducationForm />} />
+          <Route path="/family-tracker" element={<FamilyTracker />} /> {/* Add this route */}
         </Routes>
       </div>
     </Router>

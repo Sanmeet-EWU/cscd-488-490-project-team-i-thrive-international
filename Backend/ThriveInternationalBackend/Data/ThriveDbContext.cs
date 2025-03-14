@@ -46,7 +46,11 @@ namespace ThriveInternationalBackend.Data
                 .HasOne(s => s.Refugee)
                 .WithMany()
                 .HasForeignKey(s => s.RefugeeId)
-                .IsRequired(); // Foreign key is required, but navigation property is optional
+                .IsRequired(); // Foreign key is required, navigation property is optional
+
+            modelBuilder.Entity<Student>()
+                .HasIndex(s => s.ParentName) // Index for faster family lookups
+                .HasDatabaseName("idx_student_parent_name");
 
             modelBuilder.Entity<Student>()
                 .ToTable("student");
