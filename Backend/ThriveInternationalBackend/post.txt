@@ -1,0 +1,79 @@
+-- Create the refugee table
+CREATE TABLE refugee (
+    refugee_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    date_of_birth DATE NOT NULL,
+    gender VARCHAR(50) NOT NULL,
+    country_of_origin VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(50) NOT NULL,
+    email_address VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL
+);
+
+-- Create the householdmember table
+CREATE TABLE householdmember (
+    household_id SERIAL PRIMARY KEY,
+    refugee_id INTEGER REFERENCES refugee(refugee_id),
+    name VARCHAR(200),
+    date_of_birth DATE,
+    relationship VARCHAR(100),
+    immigration_status VARCHAR(100),
+    intake_eligibility_needs VARCHAR(250)
+);
+
+-- Create the intakeform table
+CREATE TABLE intakeform (
+    form_id SERIAL PRIMARY KEY,
+    refugee_id INTEGER REFERENCES refugee(refugee_id),
+    form_type VARCHAR(50) NOT NULL,
+    intake_date DATE NOT NULL,
+    navigator_name VARCHAR(100),
+    program_type JSONB,
+    asylum_date_granted DATE,
+    alien_number VARCHAR(50),
+    eligibility_date DATE,
+    program_eligibility JSONB,
+    services_needed TEXT[],
+    liability JSONB,
+    extra_data JSONB
+);
+
+-- Create the services table
+CREATE TABLE services (
+    service_id SERIAL PRIMARY KEY,
+    refugee_id INTEGER REFERENCES refugee(refugee_id),
+    service_type VARCHAR(50) NOT NULL,
+    service_description TEXT,
+    service_date DATE,
+    next_step VARCHAR(250),
+    notes TEXT
+);
+
+
+
+
+CREATE TABLE "student" (
+    refugee_id INTEGER PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    birth_date DATE NOT NULL,
+    address TEXT NOT NULL,
+    gender VARCHAR(50) NOT NULL,
+    school VARCHAR(255) NOT NULL,
+    current_grade VARCHAR(50) NOT NULL,
+    languages_spoken VARCHAR(255) NOT NULL,
+    country_of_origin VARCHAR(100) NOT NULL,
+    parent_name VARCHAR(255) NOT NULL,
+    parent_languages_spoken VARCHAR(255) NOT NULL,
+    parent_phone_number VARCHAR(20) NOT NULL,
+    parent_email VARCHAR(255) NOT NULL,
+    preferred_contact_method VARCHAR(50) NOT NULL,
+    insurance_liability BOOLEAN NOT NULL,
+    insurance_liability_signature VARCHAR(255) NOT NULL,
+    waiver_and_release BOOLEAN NOT NULL,
+    waiver_and_release_signature VARCHAR(255) NOT NULL,
+    media_release BOOLEAN NOT NULL,
+    media_release_signature VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_refugee FOREIGN KEY (refugee_id) REFERENCES "refugee" (refugee_id)
+);
