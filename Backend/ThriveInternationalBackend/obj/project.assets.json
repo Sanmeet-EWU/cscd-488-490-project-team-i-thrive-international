@@ -5491,11 +5491,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/parbhatrai/Desktop/Family2/cscd-488-490-project-team-i-thrive-international/Backend/ThriveInternationalBackend/ThriveInternationalBackend.csproj",
+      "projectUniqueName": "/Users/parbhatrai/Desktop/FinalDay/cscd-488-490-project-team-i-thrive-international/Backend/ThriveInternationalBackend/ThriveInternationalBackend.csproj",
       "projectName": "ThriveInternationalBackend",
-      "projectPath": "/Users/parbhatrai/Desktop/Family2/cscd-488-490-project-team-i-thrive-international/Backend/ThriveInternationalBackend/ThriveInternationalBackend.csproj",
+      "projectPath": "/Users/parbhatrai/Desktop/FinalDay/cscd-488-490-project-team-i-thrive-international/Backend/ThriveInternationalBackend/ThriveInternationalBackend.csproj",
       "packagesPath": "/Users/parbhatrai/.nuget/packages/",
-      "outputPath": "/Users/parbhatrai/Desktop/Family2/cscd-488-490-project-team-i-thrive-international/Backend/ThriveInternationalBackend/obj/",
+      "outputPath": "/Users/parbhatrai/Desktop/FinalDay/cscd-488-490-project-team-i-thrive-international/Backend/ThriveInternationalBackend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/parbhatrai/.nuget/NuGet/NuGet.Config"
